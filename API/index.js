@@ -159,7 +159,7 @@ app.post("/places", async (req, res) => {
   });
 });
 
-app.get("/places", async (req, res) => {
+app.get("/user-places", async (req, res) => {
   const { token } = req.cookies;
   jwt.verify(token, jwtSecret, {}, async (err, userDoc) => {
     const { id } = userDoc;
@@ -206,6 +206,10 @@ app.put("/places", async (req, res) => {
       res.json('ok');
     }
   });
+});
+
+app.get('/places', async (req, res) => {
+  res.json(await Place.find());
 });
 
 app.listen(4000);
