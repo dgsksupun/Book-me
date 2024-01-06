@@ -3,7 +3,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import IndexPage from "./pages/indexPage";
+import IndexPage from "./pages/IndexPage";
 import LoginPage from "./pages/LoginPage";
 import LayOut from "./LayOut";
 import RegisterPage from "./pages/RegisterPage";
@@ -12,6 +12,7 @@ import { UserContextProvider } from "./userContext";
 import ProfilePage from "./pages/ProfilePage";
 import PlacesPage from "./pages/PlacesPage";
 import PlacesFormPage from "./pages/PlacesFormPage";
+import SinglePlacePage from "./pages/SinglePlacePage";
 
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
@@ -28,6 +29,7 @@ function App() {
       <Route path="/account/places" element ={<PlacesPage/>}/>
       <Route path="/account/places/new" element ={<PlacesFormPage/>}/>
       <Route path="/account/places/:id" element ={<PlacesFormPage/>}/>
+      <Route path="/place/:id"  element ={<SinglePlacePage/>}/>
       
     </Route>
     </Routes>

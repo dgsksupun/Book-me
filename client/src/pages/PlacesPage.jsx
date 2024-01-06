@@ -40,17 +40,18 @@ export default function PlacesPage() {
             Add new Place{" "}
           </Link>
         </div>
-        <div className="mt-5">
+        <div className="mt-5 grid grid-cols-2 gap-x-3  ">
          {places.length > 0 && places.map(place =>(
-          <Link to={'/account/places/' + place._id} className="flex cursor-pointer gap-4 bg-gray-200 p-4 rounded-2xl">
-            <div className="flex w-32 h-32 bg-gray-400 grow shrink-0">
+          <Link to={'/account/places/' + place._id} className="flex cursor-pointer gap-4 bg-gray-200 p-4 rounded-2xl mb-1">
+            <div className="flex w-32 h-32 bg-gray-400 grow shrink-0 ">
             {place.photos.length > 0  && 
             <img  className= "object-cover w-32 h-32" src={'http://localhost:4000/uploads/'+ place.photos[0]} alt="" />}
             </div>
             <div className="grow-0 shrink"> 
                 
             <h2 className="text-xl ">{place.title}</h2>
-            <p className="text-sm mt-2 ">{place.description}</p>
+            <p className="text-sm mt-2 ">{place.description}</p><br/>
+            <h3 className="font-bold ">{place.pricePerNight}</h3>
               </div>
             </Link>
          ))}

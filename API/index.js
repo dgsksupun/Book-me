@@ -137,9 +137,10 @@ app.post("/places", async (req, res) => {
     description,
     perks,
     extraInfo,
-    checkIn,
-    checkOut,
+    checkInTime,
+    checkOutTime,
     maxGuests,
+    pricePerNight,
   } = req.body;
   jwt.verify(token, jwtSecret, {}, async (err, userDoc) => {
     if (err) throw err;
@@ -151,9 +152,10 @@ app.post("/places", async (req, res) => {
       description,
       perks,
       extraInfo,
-      checkIn,
-      checkOut,
+      checkInTime,
+      checkOutTime,
       maxGuests,
+      pricePerNight,
     });
     res.json(placeDoc);
   });
@@ -182,9 +184,10 @@ app.put("/places", async (req, res) => {
     description,
     perks,
     extraInfo,
-    checkIn,
-    checkOut,
+    checkInTime,
+    checkOutTime,
     maxGuests,
+    pricePerNight,
   } = req.body;
 
   jwt.verify(token, jwtSecret, {}, async (err, userDoc) => {
@@ -198,14 +201,15 @@ app.put("/places", async (req, res) => {
         description,
         perks,
         extraInfo,
-        checkIn,
-        checkOut,
+        checkInTime,
+        checkOutTime,
         maxGuests,
+        pricePerNight ,
       });
       await placeDoc.save();
       res.json('ok');
     }
-  });
+  }); 
 });
 
 app.get('/places', async (req, res) => {
