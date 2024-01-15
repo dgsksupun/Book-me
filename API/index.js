@@ -30,19 +30,21 @@ app.use(
   })
 );
 
-// function getUserDataFromReq(req) {
-//   return new Promise((resolve, reject) => {
-//     jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
-//       if (err) throw err;
-//       resolve(userData);
-//     });
-//   });
-// }
+function getUserDataFromRequest(req){
+  return new Promise((resolve, reject) => {
+    jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userDoc) => {
+      if(err) throw err;
+      resolve(userDoc);
+    });
+  });
+  
+}
 
 app.get("/test", async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
   res.json("test ok");
 });
+
 
 app.post("/register", async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
@@ -217,19 +219,55 @@ app.get('/places', async (req, res) => {
   res.json(await Place.find());
 });
 
-app.post('/bookings', (req, res) => {
-  const {
-    place,checkIn,checkOut,guests,name,phoneNumber,price,
-  } = req.body;
-   Booking.create({
-    place,checkIn,checkOut,guests,name,phoneNumber,price,
-  }).then((doc) =>{
-    
-    res.json(doc);
-  }).catch((err) => {
-     throw err;
-  });
-  });
+app.post('/bookings', async (req, res) => {
+  try {
+    const userDoc = await getUserDataFromRequest(req);
+
+    const {
+      place, checkIn, checkOut, guests, name, phoneNumber, price,
+    } = req.body;
+
+    // Check if the user has already booked the same place within the given date range
+    const existingBooking = await Booking.findOne({
+      user: userDoc.id,
+      place,
+      $or: [
+        { checkIn: { $lte: checkIn }, checkOut: { $gte: checkIn } },
+        { checkIn: { $lte: checkOut }, checkOut: { $gte: checkOut } },
+      ],
+    });
+
+    if (existingBooking) {
+      // User has already booked the same place within the given date range
+      return res.status(400).json({ error: 'You have already booked this place for the selected dates.' });
+    }
+
+    // If no existing booking is found, create a new booking
+    const newBooking = await Booking.create({
+      place,
+      checkIn,
+      checkOut,
+      guests,
+      name,
+      phoneNumber,
+      price,
+      user: userDoc.id,
+    });
+
+    res.json(newBooking);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+
+app.get('/bookings', async (req, res) => {
+const userDoc =  await getUserDataFromRequest(req);
+res.json( await Booking.find({user:userDoc.id}).populate('place'));
+});
 
 
 app.listen(4000);

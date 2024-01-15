@@ -6,6 +6,10 @@ const bookingSchema = new mongoose.Schema({
         ref: 'Place',
         required: true
     },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+    },
     checkIn: {
         type: Date,
         required: true

@@ -13,6 +13,8 @@ import ProfilePage from "./pages/ProfilePage";
 import PlacesPage from "./pages/PlacesPage";
 import PlacesFormPage from "./pages/PlacesFormPage";
 import SinglePlacePage from "./pages/SinglePlacePage";
+import BookingsPage from "./pages/BookingsPage";
+import SingleBookingPage from "./pages/SingleBookingPage";
 
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
@@ -30,6 +32,8 @@ function App() {
       <Route path="/account/places/new" element ={<PlacesFormPage/>}/>
       <Route path="/account/places/:id" element ={<PlacesFormPage/>}/>
       <Route path="/place/:id"  element ={<SinglePlacePage/>}/>
+      <Route path="/account/bookings" element={<BookingsPage/>}/>
+      <Route path="/account/bookings/:id" element={<SingleBookingPage/>}/>
       
     </Route>
     </Routes>
