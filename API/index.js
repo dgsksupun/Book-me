@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const { default: mongoose } = require("mongoose");
 const User = require("./models/User");
 const Place = require("./models/Places");
+const Booking = require("./models/Booking");
 const cookieParser = require("cookie-parser");
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
@@ -215,6 +216,21 @@ app.put("/places", async (req, res) => {
 app.get('/places', async (req, res) => {
   res.json(await Place.find());
 });
+
+app.post('/bookings', (req, res) => {
+  const {
+    place,checkIn,checkOut,guests,name,phoneNumber,price,
+  } = req.body;
+   Booking.create({
+    place,checkIn,checkOut,guests,name,phoneNumber,price,
+  }).then((doc) =>{
+    
+    res.json(doc);
+  }).catch((err) => {
+     throw err;
+  });
+  });
+
 
 app.listen(4000);
 //
